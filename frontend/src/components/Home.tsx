@@ -8,22 +8,18 @@ import DeleteUser from "./DeleteUser";
 
 const Home: React.FC = () => {
   const {
-    newUser,
-    setNewUser,
-    users,
     selectedUserId,
     setIsEditModalOpen,
     setIsDeleteModalOpen,
     setIsAddModalOpen,
-    handleAddUser,
-    handleEditUser,
-    handleDeleteUser,
-    handleUserClick,
-    handlePageClick
+    handlePageClick,
   } = useUserContext();
 
   return (
-    <div onClick={handlePageClick} className="container mx-auto px-5 lg:px-10 my-8">
+    <div
+      onClick={handlePageClick}
+      className="container mx-auto px-5 lg:px-10 my-8"
+    >
       <h1 className="text-3xl font-bold mb-4">User List</h1>
       <div className="mb-4 flex space-x-4">
         <button
@@ -50,37 +46,17 @@ const Home: React.FC = () => {
       </div>
       <div>
         {/* UserList bileşeni */}
-        <UserList
-          users={users}
-          selectedUserId={selectedUserId}
-          handleUserClick={handleUserClick}
-        />
+        <UserList />
         {/* AddUser bileşeni */}
 
-        <AddUser
-          newUser={newUser}
-          setNewUser={setNewUser}
-          handleAddUser={handleAddUser}
-          setIsAddModalOpen={setIsAddModalOpen}
-        />
+        <AddUser />
         {/* EditUser bileşeni */}
 
-        <EditUser
-          newUser={newUser}
-          setNewUser={setNewUser}
-          handleEditUser={handleEditUser}
-          setIsEditModalOpen={setIsEditModalOpen}
-          selectedUserId={selectedUserId}
-        />
+        <EditUser />
 
         {/* DeleteUser bileşeni */}
 
-        <DeleteUser
-          newUser={newUser}
-          handleDeleteUser={handleDeleteUser}
-          setIsDeleteModalOpen={setIsDeleteModalOpen}
-          selectedUserId={selectedUserId}
-        />
+        <DeleteUser />
       </div>
     </div>
   );
