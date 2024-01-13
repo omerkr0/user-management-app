@@ -1,3 +1,6 @@
+// UserService.ts
+
+// Defining the User interface for user object
 interface User {
     id: number;
     username: string;
@@ -6,8 +9,10 @@ interface User {
     birthdate: string;
   }
   
+  // Base URL for the API
   const BASE_URL = "http://localhost:8000";
   
+  // Function to fetch the list of users from the server
   export const listUsers = async (): Promise<User[]> => {
     try {
       const response = await fetch(`${BASE_URL}/listusers`);
@@ -19,6 +24,7 @@ interface User {
     }
   };
   
+  // Function to add a new user to the server
   export const addUser = async (newUser: User) => {
     try {
       const response = await fetch(`${BASE_URL}/adduser`, {
@@ -38,6 +44,7 @@ interface User {
     }
   };
   
+  // Function to edit an existing user on the server
   export const editUser = async (userId: number, updatedUser: User) => {
     try {
       const response = await fetch(`${BASE_URL}/edituser/${userId}`, {
@@ -58,6 +65,7 @@ interface User {
     }
   };
   
+  // Function to delete an existing user from the server
   export const deleteUser = async (userId: number) => {
     try {
       const response = await fetch(`${BASE_URL}/deleteuser/${userId}`, {
