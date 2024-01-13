@@ -44,6 +44,7 @@ interface UserContextProps {
   handlePageClick: (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => void;
+  handleKeyPress: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 // Creating a context for user-related data
@@ -78,7 +79,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   // State for response messages from CRUD operations
   const [responseMessage, setResponseMessage] = useState<string>("");
-  
+
   // State for the list of users
   const [users, setUsers] = useState<User[]>([]);
 
@@ -179,6 +180,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    // Check if the Escape key is pressed
+    if (event.key === "Escape") {
+      // Handle Escape key press (you can add additional logic if needed)
+      setSelectedUserId(null);
+    }
+  };
+
   // Fetching users on component mount
   useEffect(() => {
     fetchUsers();
@@ -206,6 +215,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     handleDeleteUser,
     handleUserClick,
     handlePageClick,
+    handleKeyPress,
   };
 
   // Providing the context value to the children components

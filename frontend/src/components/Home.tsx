@@ -21,6 +21,7 @@ const Home: React.FC = () => {
     setIsDeleteModalOpen,
     setIsAddModalOpen,
     handlePageClick,
+    handleKeyPress,
   } = useUserContext();
 
   // Rendering the component
@@ -28,6 +29,8 @@ const Home: React.FC = () => {
     // Container div with click event handler to handle page click
     <div
       onClick={handlePageClick}
+      onKeyDown={handleKeyPress}
+      tabIndex={0}
       className="container mx-auto px-5 lg:px-10 my-8"
     >
       {/* Heading for the user list */}
