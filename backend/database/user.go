@@ -4,10 +4,9 @@ import (
 	"log"
 )
 
-// User tablosuna ait veritabanı işlemleri
-
+// InitializeDefaultUser inserts a default user into the 'users' table if it does not exist
 func InitializeDefaultUser() error {
-	// Varsayılan kullanıcıyı ekleme işlemi
+	// Insert default user if not already present
 	_, err := DB.Exec(`
 		INSERT OR IGNORE INTO users (username, fullname, email, birthdate) VALUES ('John_user', 'John Doe', 'john_doe@gmail.com', '2001-05-15' );
 	`)
@@ -19,8 +18,9 @@ func InitializeDefaultUser() error {
 	return nil
 }
 
+// InsertUser inserts a new user into the 'users' table
 func InsertUser(newUser User) (int64, error) {
-	// Kullanıcı ekleme işlemi
+	// Insert a new user into the 'users' table
 	result, err := DB.Exec("INSERT INTO users (username, fullname, email, birthdate) VALUES (?, ?, ?, ?)",
 		newUser.Username, newUser.Fullname, newUser.Email, newUser.Birthdate)
 	if err != nil {
@@ -28,13 +28,14 @@ func InsertUser(newUser User) (int64, error) {
 		return 0, err
 	}
 
-	// Eklenen kullanıcının ID'sini al
+	// Get the ID of the newly inserted user
 	userID, _ := result.LastInsertId()
 	return userID, nil
 }
 
+// GetAllUsers retrieves all users from the 'users' table
 func GetAllUsers() ([]User, error) {
-	// Tüm kullanıcıları getirme işlemi
+	// Retrieve all users from the 'users' table
 	rows, err := DB.Query("SELECT id, username, fullname, email, birthdate FROM users ORDER BY id ASC")
 	if err != nil {
 		log.Println("Failed to query users:", err)
@@ -42,11 +43,11 @@ func GetAllUsers() ([]User, error) {
 	}
 	defer rows.Close()
 
-	// Kullanıcıları saklamak için bir dilim (slice) oluştur
+	// Create a slice to store users
 	var users []User
 	for rows.Next() {
 		var user User
-		// Her bir satırdaki verileri User struct'ına çözümle
+		// Parse the data from each row into the User struct
 		if err := rows.Scan(&user.ID, &user.Username, &user.Fullname, &user.Email, &user.Birthdate); err != nil {
 			log.Println("Failed to scan user:", err)
 			return nil, err
@@ -57,7 +58,9 @@ func GetAllUsers() ([]User, error) {
 	return users, nil
 }
 
+// UpdateUser updates an existing user in the 'users' table
 func UpdateUser(userID int, updatedUser User) error {
+	// Update an existing user in the 'users' table
 	_, err := DB.Exec("UPDATE users SET username = ?, fullname = ?, email = ?, birthdate = ? WHERE id = ?",
 		updatedUser.Username, updatedUser.Fullname, updatedUser.Email, updatedUser.Birthdate, userID)
 	if err != nil {
@@ -67,7 +70,9 @@ func UpdateUser(userID int, updatedUser User) error {
 	return nil
 }
 
+// DeleteUser deletes an existing user from the 'users' table
 func DeleteUser(userID int) error {
+	// Delete an existing user from the 'users' table
 	_, err := DB.Exec("DELETE FROM users WHERE id = ?", userID)
 	if err != nil {
 		log.Println("Failed to delete user:", err)
