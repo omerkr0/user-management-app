@@ -43,4 +43,4 @@ The project consists of two main parts: the frontend and the backend.
 
 ## Usage
 
-When the application starts, visit `http://localhost:3000` in your browser to access the user management interface. You can add new users, view existing users, update their information, and delete them.
+When the application starts, visit `http://localhost:3000` in your browser to access the user management interface. You can add new users, view existing users, update their information and delete them. And you can exit the user selection by pressing the escape(esc) key or by clicking on a blank area of the page.
