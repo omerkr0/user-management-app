@@ -1,6 +1,9 @@
 // UserProvider.ts
 
+// Importing necessary React modules
 import React, { createContext, useContext, useState, useEffect } from "react";
+
+// Importing UserService functions for CRUD operations
 import {
   listUsers,
   addUser,
@@ -8,6 +11,7 @@ import {
   deleteUser,
 } from "../services/UserService";
 
+// Defining the User interface for user object
 interface User {
   id: number;
   username: string;
@@ -16,6 +20,7 @@ interface User {
   birthdate: string;
 }
 
+// Defining the UserContextProps interface for context values
 interface UserContextProps {
   newUser: User;
   setNewUser: React.Dispatch<React.SetStateAction<User>>;
@@ -41,8 +46,10 @@ interface UserContextProps {
   ) => void;
 }
 
+// Creating a context for user-related data
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
+// Creating a custom hook to use the context
 export const useUserContext = (): UserContextProps => {
   const context = useContext(UserContext);
 
@@ -53,11 +60,14 @@ export const useUserContext = (): UserContextProps => {
   return context;
 };
 
+// Defining the UserProviderProps interface for provider props
 interface UserProviderProps {
   children: React.ReactNode;
 }
 
+// Creating the UserProvider component
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+  // State for the new user information
   const [newUser, setNewUser] = useState<User>({
     id: 0,
     username: "",
@@ -66,14 +76,21 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     birthdate: "",
   });
 
+  // State for response messages from CRUD operations
   const [responseMessage, setResponseMessage] = useState<string>("");
+  
+  // State for the list of users
   const [users, setUsers] = useState<User[]>([]);
+
+  // State for the selected user's ID
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
+  // States for modal visibility
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
 
+  // Function to fetch users from the server
   const fetchUsers = async () => {
     try {
       const data = await listUsers();
@@ -84,6 +101,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  // Function to handle adding a new user
   const handleAddUser = async () => {
     try {
       const data = await addUser(newUser);
@@ -105,6 +123,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  // Function to handle editing an existing user
   const handleEditUser = async () => {
     if (!selectedUserId) {
       console.error("Düzenlenecek kullanıcı seçilmedi.");
@@ -120,6 +139,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  // Function to handle deleting an existing user
   const handleDeleteUser = async () => {
     if (!selectedUserId) {
       console.error("Silinecek kullanıcı seçilmedi.");
@@ -135,7 +155,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       setIsDeleteModalOpen(false);
     }
   };
-  // Kullanıcıya tıklama olayını ele alan fonksiyon
+
+  // Function to handle user click event
   const handleUserClick = (userId: number) => {
     setSelectedUserId(userId);
     const selectedUser = users.find((user) => user.id === userId);
@@ -148,19 +169,22 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     });
   };
 
+  // Function to handle page click event
   const handlePageClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    // Boş bir alana tıklanınca seçimi iptal et
+    // Cancel selection when clicking on an empty area
     if (event.target === event.currentTarget && selectedUserId !== null) {
       setSelectedUserId(null);
     }
   };
 
+  // Fetching users on component mount
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  // Context values
   const contextValue: UserContextProps = {
     newUser,
     setNewUser,
@@ -184,6 +208,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     handlePageClick,
   };
 
+  // Providing the context value to the children components
   return (
     <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
