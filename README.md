@@ -1,6 +1,6 @@
 # User-Management-App
 
-This project is a simple user management application developed using Next.js, TypeScript, Tailwind CSS, and Go. User records are managed using an SQLite database.
+This project is a simple user management application developed using Next.js, TypeScript, Tailwind CSS and Go. User records are managed using an SQLite database.
 
 ## Getting Started
 
